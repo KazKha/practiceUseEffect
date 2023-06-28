@@ -32,7 +32,7 @@ function App() {
   const buttonHalders = (params) =>{
     
     if (params === true  ){ 
-      setdataId(dataId + 20)``
+      setdataId(dataId + 20)
     }else if (params === false  && dataId > 20) { 
       setdataId( dataId - 20 ) 
        }
@@ -71,7 +71,10 @@ function App() {
             })
           }
       </ul>
-      
+       
+
+
+
     </div>
   );
 }
