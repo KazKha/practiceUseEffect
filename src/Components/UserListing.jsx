@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link  } from "react-router-dom";
 
 
 function UserListing() {
@@ -24,8 +24,9 @@ function UserListing() {
       )
       .then((response) => {
         setUserList(response.data);
+        console.log( response.data);
+        document.title = ` ${response.data.length}  records `;
       });
-    document.title = ` ${userList.length}  records `;
   }, [dataId]);
 
   const buttonHalders = (params) => {
@@ -89,6 +90,7 @@ function UserListing() {
               );
             })}
           </tbody>
+          
           <tfoot>
             <tr>
               <th> Srno </th>
@@ -101,6 +103,8 @@ function UserListing() {
           </tfoot>
         </table>
       </div>
+      
+      
     </div>
   );
 }
