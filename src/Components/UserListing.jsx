@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { Link  } from "react-router-dom";
-
+import { Link } from "react-router-dom";
+import { appContext } from "../App";
 
 function UserListing() {
+  const dataId = useContext(appContext);
 
-  const [dataId, setdataId] = useState(1);
+
+
   const [userList, setUserList] = useState([]);
 
   useEffect(() => {
@@ -20,20 +22,24 @@ function UserListing() {
     // fectUserData();
     axios
       .get(
-        `https://hub.dummyapis.com/employee?noofRecords=20&idStarts=${dataId}`
+        `https://hub.dummyapis.com/employee?noofRecords=100&idStarts=${dataId.data.listform}`
       )
       .then((response) => {
         setUserList(response.data);
-        console.log( response.data);
+        console.log(response.data);
         document.title = ` ${response.data.length}  records `;
       });
-  }, [dataId]);
+  }, [dataId.data.listform]);
 
   const buttonHalders = (params) => {
     if (params === true) {
-      setdataId(dataId + 20);
-    } else if (params === false && dataId > 20) {
-      setdataId(dataId - 20);
+      let incre = dataId.data.listform+100
+      dataId.updateData({...dataId.data, listform: incre });
+      
+    } else if (params === false && dataId.data.listform > 0) {
+      let decre = dataId.data.listform - 100
+
+      dataId.updateData({...dataId.data, listform : decre});
     }
   };
 
@@ -85,12 +91,16 @@ function UserListing() {
                   <td> {item.contactNumber} </td>
                   <td> {item.dob} </td>
                   <td> {item.age} </td>
-                  <td> </td>
+                  <td>
+                    <Link to={`/user-detail/:${item.id}`} className="button">
+                      <span>View Record </span>
+                    </Link>
+                  </td>
                 </tr>
               );
             })}
           </tbody>
-          
+
           <tfoot>
             <tr>
               <th> Srno </th>
@@ -99,12 +109,11 @@ function UserListing() {
               <th> Phone </th>
               <th> Dob </th>
               <th> Age </th>
+              <th> Action </th>
             </tr>
           </tfoot>
         </table>
       </div>
-      
-      
     </div>
   );
 }
